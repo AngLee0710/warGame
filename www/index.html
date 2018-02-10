@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <!-- <script src="js/jquery.mobile-1.4.5.min.js"></script> -->
+        <title>app</title>
+    </head>
+    <body>
+        <div data-role="page">
+            <div role="main" class="ui-content">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a" style="height: 100%;">
+                        <span>村民:<span id="villagers"></span></span><br />
+                        <span>農夫:</span><button id="farmersLower">-</button><span id="farmers">0</span><button id="farmersUpper">+</button><br />
+                        <span>廚夫:</span><button id="cooksLower">-</button><span id="cooks">0</span><button id="cooksUpper">+</button><br />
+                        <span>伐木工:</span><button id="lumberjackLower">-</button><span id="lumberjack">0</span><button id="lumberjackUpper">+</button><br />
+                        <span>石礦工:</span><button id="rockWorkersLower">-</button><span id="rockWorkers">0</span><button id="rockWorkersUpper">+</button><br />
+                        <span>鐵礦工:</span><button id="ironWorkersLower">-</button><span id="ironWorkers">0</span><button id="ironWorkersUpper">+</button><br />
+                    </div>
+                    <div class="ui-block-b" style="height: 100%;">
+                        <span>倉庫:</span><br />
+                        &emsp;<span id="rice">稻米:<span id="riceValue">0</span></span><br />
+                        &emsp;<span id="food">糧食:<span id="foodValue">0</span></span><br />
+                        &emsp;<span id="wood">木頭:<span id="woodValue">0</span></span><br />
+                        &emsp;<span id="rock">石頭:<span id="rockValue">0</span></span><br />
+                        &emsp;<span id="iron">鐵:<span id="ironValue">0</span></span><br />
+                    </div>
+                </div><br />            
+                <div class="ui-grid-a" style="height:95px">
+                    <div class="ui-block-a" style="height:100%">
+                        <span>建築:</span><br />
+                        <span>房舍:<span id="house">0</span></span><button id="houseMake">製作</button><span>木頭x20</span><br />
+                        <span>兵工廠:<button id="arsenal">尚未擁有</button><span id="arsenalText">木頭x150</span></span>
+                    </div>
+                    <div class="ui-block-b" style="height:100%"></div>
+                </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
