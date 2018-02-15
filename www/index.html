@@ -5,8 +5,8 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
         <script src="js/jquery-3.3.1.min.js"></script>
         <!-- <script src="js/jquery.mobile-1.4.5.min.js"></script> -->
         <title>app</title>
@@ -15,13 +15,34 @@
         <div data-role="page">
             <div role="main" class="ui-content">
                 <div class="ui-grid-a">
-                    <div class="ui-block-a" style="height: 100%;">
+                    <div id="people" class="ui-block-a" style="height: 100%;">
+                        <!-- 村民 -->
                         <span>村民:<span id="villagers"></span></span><br />
-                        <span>農夫:</span><button id="farmersLower">-</button><span id="farmers">0</span><button id="farmersUpper">+</button><br />
-                        <span>廚夫:</span><button id="cooksLower">-</button><span id="cooks">0</span><button id="cooksUpper">+</button><br />
-                        <span>伐木工:</span><button id="lumberjackLower">-</button><span id="lumberjack">0</span><button id="lumberjackUpper">+</button><br />
-                        <span>石礦工:</span><button id="rockWorkersLower">-</button><span id="rockWorkers">0</span><button id="rockWorkersUpper">+</button><br />
-                        <span>鐵礦工:</span><button id="ironWorkersLower">-</button><span id="ironWorkers">0</span><button id="ironWorkersUpper">+</button><br />
+                        <!-- 農夫 -->
+                        <span>農夫:</span>
+                        <button id="farmersLower">-</button>
+                        <span id="farmers">0</span>
+                        <button id="farmersUpper">+</button><br />
+                        <!-- 廚夫 -->
+                        <span>廚夫:</span>
+                        <button id="cooksLower">-</button>
+                        <span id="cooks" name="cooks">0</span>
+                        <button id="cooksUpper">+</button><br />
+                        <!-- 伐木工 -->
+                        <span>伐木工:</span>
+                        <button id="lumberjackLower">-</button>
+                        <span id="lumberjack">0</span>
+                        <button id="lumberjackUpper">+</button><br />
+                        <!-- 石礦工 -->
+                        <span>石礦工:</span>
+                        <button id="rockWorkersLower">-</button>
+                        <span id="rockWorkers">0</span>
+                        <button id="rockWorkersUpper">+</button><br />
+                        <!-- 鐵礦工 -->
+                        <span>鐵礦工:</span>
+                        <button id="ironWorkersLower">-</button>
+                        <span id="ironWorkers">0</span>
+                        <button id="ironWorkersUpper">+</button><br />
                     </div>
                     <div class="ui-block-b" style="height: 100%;">
                         <span>倉庫:</span><br />
@@ -41,6 +62,13 @@
                     <div class="ui-block-b" style="height:100%"></div>
                 </div>
         </div>
+        <div class="bg"></div>
+        <div class="content">
+            <button class="ui-btn">10</button>
+            <button class="ui-btn">50</button>
+            <button class="ui-btn">100</button>
+        </div>
+        <!-- <div class="maskPopUpWinContent">这里是正文内容</div> -->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>

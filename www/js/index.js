@@ -2,6 +2,8 @@ $(document).ready(function() {
     var CL = console.log;
     //村民
     var villagers = 5;
+    //時間函數
+    var time;
 
     var buildingLevelChinese = ['尚未擁有', '等級一', '等級二', '等級三', '等級四',
      '等級五', '等級六', '等級七', '等級八', '等級九', '等級十'];
@@ -14,10 +16,45 @@ $(document).ready(function() {
     $('#rock').hide();
     $('#iron').hide();
 
+    //滑鼠監聽事件
+    document.addEventListener('click', function(dom) {
+        var fuc =  dom.path[0].id + 'Fuc()';
+        eval(fuc);
+    }, false);
+
+    document.addEventListener('touchstart', function(dom) {
+        setTime(dom.path[0].id);
+    }, false)
+
+    document.addEventListener('touchend', function() {
+        clearInterval(time);
+    }, false)
+
+    function setTime(id) {
+        var fuc = 'setInterval(' + id + 'Fuc, 200)';
+        time = eval(fuc);
+    }
+    function clearTime(id) {
+        clearInterval(a);
+    }
+
+    //遮罩效果
+    //農夫
+    // $('#farmers').click(function(){
+    //     $('.bg').css({'display':'block'});
+    //     $('.content').css({'display':'block'});
+    // });
+    // $('.bg').click(function(){
+    //     $('.bg').css({'display':'none'});
+    //     $('.content').css({'display':'none'});
+    // });
+    $('#people > span').click(function() {
+        CL(this.id);
+    });
+
     //滑鼠事件
 
     //農夫
-    $('#farmersUpper').click(farmersUpperFuc);
 
     function farmersUpperFuc() {
         var temp = $('#farmers').html();
@@ -27,8 +64,6 @@ $(document).ready(function() {
         }
         $('#farmers').html(temp);
     }
-
-    $('#farmersLower').click(farmersLowerFuc);
 
     function farmersLowerFuc() {
         var temp = $('#farmers').html();
@@ -41,22 +76,7 @@ $(document).ready(function() {
         $('#farmers').html(temp);
     }
 
-    $('#farmersUpper').mousedown(function() {
-        var a = setInterval(farmersUpperFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        }); 
-    });
-
-    $('#farmersLower').mousedown(function() {
-        var a = setInterval(farmersLowerFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        });
-    });
-
     //廚夫
-    $('#cooksUpper').click(cooksUpperFuc);
 
     function cooksUpperFuc() {
         var temp = $('#cooks').html();
@@ -66,8 +86,6 @@ $(document).ready(function() {
         }
         $('#cooks').html(temp);
     }
-
-    $('#cooksLower').click(cooksLowerFuc);
 
     function cooksLowerFuc() {
         var temp = $('#cooks').html();
@@ -80,23 +98,7 @@ $(document).ready(function() {
         $('#cooks').html(temp);
     }
 
-    $('#cooksUpper').mousedown(function() {
-        var a = setInterval(cooksUpperFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        }); 
-    });
-
-    $('#cooksLower').mousedown(function() {
-        var a = setInterval(cooksLowerFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        });
-    });
-
     //伐木工
-    $('#lumberjackUpper').click(lumberjackUpperFuc);
-
     function lumberjackUpperFuc() {
         var temp = $('#lumberjack').html();
         if(villagers > 0){
@@ -105,8 +107,6 @@ $(document).ready(function() {
         }
         $('#lumberjack').html(temp);
     }
-
-    $('#lumberjackLower').click(lumberjackLowerFuc);
 
     function lumberjackLowerFuc() {
         var temp = $('#lumberjack').html();
@@ -119,23 +119,7 @@ $(document).ready(function() {
         $('#lumberjack').html(temp);
     }
 
-    $('#lumberjackUpper').mousedown(function() {
-        var a = setInterval(lumberjackUpperFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        }); 
-    });
-
-    $('#lumberjackLower').mousedown(function() {
-        var a = setInterval(lumberjackLowerFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        });
-    });
-
     //石礦工
-    $('#rockWorkersUpper').click(rockWorkersUpperFuc);
-
     function rockWorkersUpperFuc() {
         var temp = $('#rockWorkers').html();
         if(villagers > 0){
@@ -144,8 +128,6 @@ $(document).ready(function() {
         }
         $('#rockWorkers').html(temp);
     }
-
-    $('#rockWorkersLower').click(rockWorkersLowerFuc);
 
     function rockWorkersLowerFuc() {
         var temp = $('#rockWorkers').html();
@@ -158,23 +140,7 @@ $(document).ready(function() {
         $('#rockWorkers').html(temp);
     }
 
-    $('#rockWorkersUpper').mousedown(function() {
-        var a = setInterval(rockWorkersUpperFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        }); 
-    });
-
-    $('#rockWorkersLower').mousedown(function() {
-        var a = setInterval(rockWorkersLowerFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        });
-    });
-
     //鐵礦工
-    $('#ironWorkersUpper').click(ironWorkersUpperFuc);
-
     function ironWorkersUpperFuc() {
         var temp = $('#ironWorkers').html();
         if(villagers > 0){
@@ -183,9 +149,6 @@ $(document).ready(function() {
         }
         $('#ironWorkers').html(temp);
     }
-
-    $('#ironWorkersLower').click(ironWorkersLowerFuc);
-
     function ironWorkersLowerFuc() {
         var temp = $('#ironWorkers').html();
         if(temp == 0)
@@ -197,25 +160,10 @@ $(document).ready(function() {
         $('#ironWorkers').html(temp);
     }
 
-    $('#ironWorkersUpper').mousedown(function() {
-        var a = setInterval(ironWorkersUpperFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        }); 
-    });
-
-    $('#ironWorkersLower').mousedown(function() {
-        var a = setInterval(ironWorkersLowerFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        });
-    });
-
     //建築
     //房屋
-    $('#houseMake').click(houseUpperFuc);
 
-    function houseUpperFuc() {
+    function houseMakeFuc() {
         var temp = $('#house').html();
         var woodValue = parseInt($('#woodValue').html());
         if($('#woodValue').html() >= 20){
@@ -227,13 +175,6 @@ $(document).ready(function() {
         $('#woodValue').html(woodValue);
     }
 
-    $('#houseMake').mousedown(function() {
-        var a = setInterval(houseUpperFuc, 200);
-        $(document).mouseup(function() {
-            clearInterval(a);
-        }); 
-    });
-
     //鐵工廠
 
     //鐵工廠 材料需求
@@ -242,15 +183,13 @@ $(document).ready(function() {
 
     //鐵工廠Level
     var arsenalLevel = 0;
-    $('#arsenal').click(function() {
+    function arsenalFuc() {
         if(parseInt($('#woodValue').html()) >= arsenalWood[arsenalLevel] && parseInt($('#rockValue').html()) >= arsenalRock[arsenalLevel]){
             arsenalLevel++;
             $('#arsenal').text(buildingLevelChinese[arsenalLevel]);
             $('#arsenalText').html('木頭:' + arsenalWood[arsenalLevel] + '  石頭:' + arsenalRock[arsenalLevel]);
-            CL('#');
         }
-
-    });
+    }
 
     //生產
 
@@ -339,21 +278,21 @@ $(document).ready(function() {
         woodSum = wood + lumberjack;
         if(foodOfWoodLack){
             foodOfWoodLack = 0;
-            woodSum -= lumberjack;
+            woodSum = wood;
         }
 
         //石頭生產計算
         rockSum = rock + rockWorkers;
         if(foodOfRockLack){
             foodOfRockLack = 0;
-            woodSum -= rockWorkers;
+            rockSum = rock;
         }
 
         //鐵生產計算 
         ironSum = iron + ironWorkers;
         if(foodOfIronLack){
             foodOfIronLack = 0;
-            ironSum -= ironWorkers;
+            ironSum = iron;
         }
 
 
