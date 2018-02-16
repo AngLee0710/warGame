@@ -26,7 +26,7 @@
                         <!-- 廚夫 -->
                         <span>廚夫:</span>
                         <button id="cooksLower">-</button>
-                        <span id="cooks" name="cooks">0</span>
+                        <span id="cooks">0</span>
                         <button id="cooksUpper">+</button><br />
                         <!-- 伐木工 -->
                         <span>伐木工:</span>
@@ -53,20 +53,25 @@
                         &emsp;<span id="iron">鐵:<span id="ironValue">0</span></span><br />
                     </div>
                 </div><br />            
-                <div class="ui-grid-a" style="height:95px">
-                    <div class="ui-block-a" style="height:100%">
-                        <span>建築:</span><br />
-                        <span>房舍:<span id="house">0</span></span><button id="houseMake">製作</button><span>木頭x20</span><br />
-                        <span>兵工廠:<button id="arsenal">尚未擁有</button><span id="arsenalText">木頭x150</span></span>
-                    </div>
-                    <div class="ui-block-b" style="height:100%"></div>
+                <div>
+                    <span>建築:</span><br />
+                    <span>房舍:
+                        <span id="house">0</span>
+                    </span>
+                    <button id="houseMake">製作</button><br />
+                    <span>材料:木頭x20</span><br />
+                    <span>兵工廠:
+                        <button id="arsenal">尚未擁有</button><br />
+                        <span id="arsenalText">材料:木頭x150</span>
+                    </span>
                 </div>
         </div>
         <div class="bg"></div>
         <div class="content">
-            <button class="ui-btn">10</button>
-            <button class="ui-btn">50</button>
-            <button class="ui-btn">100</button>
+            <button id="plusTen" class="ui-btn">10</button>
+            <button id="plusFifty" class="ui-btn">50</button>
+            <button id="plusHundred" class="ui-btn">100</button>
+            <button id="plusThousand" class="ui-btn">1000</button>
         </div>
         <!-- <div class="maskPopUpWinContent">这里是正文内容</div> -->
         <script type="text/javascript" src="cordova.js"></script>

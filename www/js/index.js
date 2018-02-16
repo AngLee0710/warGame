@@ -2,7 +2,8 @@ $(document).ready(function() {
     var CL = console.log;
     //村民
     var villagers = 5;
-    //時間函數
+
+    //pubilc時間函數
     var time;
 
     var buildingLevelChinese = ['尚未擁有', '等級一', '等級二', '等級三', '等級四',
@@ -17,151 +18,139 @@ $(document).ready(function() {
     $('#iron').hide();
 
     //滑鼠監聽事件
-    document.addEventListener('click', function(dom) {
-        var fuc =  dom.path[0].id + 'Fuc()';
-        eval(fuc);
-    }, false);
 
-    document.addEventListener('touchstart', function(dom) {
-        setTime(dom.path[0].id);
-    }, false)
+    var peopleUpperBtn = [$('#farmersUpper'), $('#cooksUpper'), $('#lumberjackUpper'), $('#rockWorkersUpper'),
+        $('#ironWorkersUpper')];
+
+    var peopleLowerBtn = [$('#farmersLower'), $('#cooksLower'), $('#lumberjackLower'),
+        $('#ironWorkersLower'), $('#rockWorkersLower')];
+
+    for(var i = 0 ; i < peopleUpperBtn.length ; i++) {
+        peopleUpperBtn[i][0].addEventListener('click', function(dom) {
+            Upper(dom.path[0].id);
+        }, false);
+
+        peopleUpperBtn[i][0].addEventListener('touchstart', function(dom) {
+            time = setInterval(function() {
+                Upper(dom.path[0].id);
+            }, 200);
+        }, false);
+
+        peopleUpperBtn[i].mousedown(function(dom) {
+            time = setInterval(function() {
+                Upper(dom.currentTarget.id);
+            }, 200);
+        });
+    } 
+    for(var i = 0 ; i < peopleLowerBtn.length ; i++) {
+        peopleLowerBtn[i][0].addEventListener('click', function(dom) {
+            Lower(dom.path[0].id);
+        }, false);
+
+        peopleLowerBtn[i][0].addEventListener('touchstart', function(dom) {
+            time = setInterval(function() {
+                Lower(dom.path[0].id);
+            }, 200);
+        }, false);
+
+        peopleLowerBtn[i].mousedown(function(dom) {
+            time = setInterval(function() {
+                Lower(dom.currentTarget.id);
+            }, 200);
+        });
+    }
 
     document.addEventListener('touchend', function() {
         clearInterval(time);
     }, false)
 
-    function setTime(id) {
-        var fuc = 'setInterval(' + id + 'Fuc, 200)';
-        time = eval(fuc);
-    }
-    function clearTime(id) {
-        clearInterval(a);
-    }
-
-    //遮罩效果
-    //農夫
-    // $('#farmers').click(function(){
-    //     $('.bg').css({'display':'block'});
-    //     $('.content').css({'display':'block'});
-    // });
-    // $('.bg').click(function(){
-    //     $('.bg').css({'display':'none'});
-    //     $('.content').css({'display':'none'});
-    // });
-    $('#people > span').click(function() {
-        CL(this.id);
+    $(document).mouseup(function() {
+        clearInterval(time);
     });
 
-    //滑鼠事件
-
-    //農夫
-
-    function farmersUpperFuc() {
-        var temp = $('#farmers').html();
+    function Upper(id) {
+        var jqueryId = id;
+        var jqueryStr = '#' + jqueryId.toString();
+        var jqueryStr = jqueryStr.substring(0, jqueryStr.length - 5);
+        var temp = $(jqueryStr.toString()).html();
         if(villagers > 0){
             temp++;
             villagers--;
         }
-        $('#farmers').html(temp);
+        $(jqueryStr.toString()).html(temp);
     }
 
-    function farmersLowerFuc() {
-        var temp = $('#farmers').html();
+    function Lower(id) {
+        var jqueryId = id;
+        var jqueryStr = '#' + jqueryId.toString();
+        var jqueryStr = jqueryStr.substring(0, jqueryStr.length - 5);
+        var temp = $(jqueryStr.toString()).html();
         if(temp == 0)
             temp = 0;
         else{
             temp--;
             villagers++;
         }
-        $('#farmers').html(temp);
+        $(jqueryStr.toString()).html(temp);
     }
 
-    //廚夫
+    //遮罩效果
+    var peopleScan = [$('#farmers'), $('#cooks'), $('#lumberjack'), $('#rockWorkers'), 
+        $('#ironWorkers'), $('#house')];
 
-    function cooksUpperFuc() {
-        var temp = $('#cooks').html();
-        if(villagers > 0){
-            temp++;
-            villagers--;
+    var TFHDomId = [$('#plusTen'), $('#plusFifty'), $('#plusHundred'), $('#plusThousand')];
+
+    //共用ID
+    var clickBeforeID;
+
+    for(var i = 0 ; i < peopleScan.length ; i++) {  
+        peopleScan[i].click(function(dom) {
+            $('.bg').css({'display':'block'});
+            $('.content').css({'display':'block'});
+            clickBeforeID = dom.currentTarget.id;
+        });
+    }
+
+    for(var i = 0 ; i < TFHDomId.length ; i++) {
+        TFHDomId[i].click(function(dom) {
+            UpperMore(dom.currentTarget.id, parseInt(dom.currentTarget.innerHTML));
+        });
+    }
+
+    $('.bg').click(function(){
+        $('.bg').css({'display':'none'});
+        $('.content').css({'display':'none'});
+    }); 
+
+    function UpperMore(id, num) {
+        var jqueryStr = '#' + clickBeforeID;
+        var temp = 0;
+        if(clickBeforeID == 'house') {
+            if(parseInt($('#woodValue').html()) >= num * 20) {
+                var wood = parseInt($('#woodValue').html());
+                wood -= num * 20;
+                villagers += 5 * num;
+                $('#woodValue').html(wood);
+                temp = parseInt($(jqueryStr).html());
+                temp += num;
+                $(jqueryStr).html(temp);
+            }
+        } else if(villagers >= num) {
+            villagers -= num;
+            temp = parseInt($(jqueryStr.toString()).html());
+            temp += num;
+            $(jqueryStr.toString()).html(temp)
         }
-        $('#cooks').html(temp);
     }
 
-    function cooksLowerFuc() {
-        var temp = $('#cooks').html();
-        if(temp == 0)
-            temp = 0
-        else{
-            temp--;
-            villagers++;
-        }
-        $('#cooks').html(temp);
-    }
-
-    //伐木工
-    function lumberjackUpperFuc() {
-        var temp = $('#lumberjack').html();
-        if(villagers > 0){
-            temp++;
-            villagers--;
-        }
-        $('#lumberjack').html(temp);
-    }
-
-    function lumberjackLowerFuc() {
-        var temp = $('#lumberjack').html();
-        if(temp == 0)
-            temp = 0
-        else{
-            temp--;
-            villagers++;
-        }
-        $('#lumberjack').html(temp);
-    }
-
-    //石礦工
-    function rockWorkersUpperFuc() {
-        var temp = $('#rockWorkers').html();
-        if(villagers > 0){
-            temp++;
-            villagers--;
-        }
-        $('#rockWorkers').html(temp);
-    }
-
-    function rockWorkersLowerFuc() {
-        var temp = $('#rockWorkers').html();
-        if(temp == 0)
-            temp = 0
-        else{
-            temp--;
-            villagers++;
-        }
-        $('#rockWorkers').html(temp);
-    }
-
-    //鐵礦工
-    function ironWorkersUpperFuc() {
-        var temp = $('#ironWorkers').html();
-        if(villagers > 0){
-            temp++;
-            villagers--;
-        }
-        $('#ironWorkers').html(temp);
-    }
-    function ironWorkersLowerFuc() {
-        var temp = $('#ironWorkers').html();
-        if(temp == 0)
-            temp = 0
-        else{
-            temp--;
-            villagers++;
-        }
-        $('#ironWorkers').html(temp);
-    }
-
+    
     //建築
     //房屋
+
+    $('#houseMake').click(houseMakeFuc);
+    $('#houseMake').mousedown(function() {
+        time = setInterval(houseMakeFuc, 200);
+    })
 
     function houseMakeFuc() {
         var temp = $('#house').html();
@@ -183,11 +172,15 @@ $(document).ready(function() {
 
     //鐵工廠Level
     var arsenalLevel = 0;
+    $('#arsenal').click(arsenalFuc);
     function arsenalFuc() {
         if(parseInt($('#woodValue').html()) >= arsenalWood[arsenalLevel] && parseInt($('#rockValue').html()) >= arsenalRock[arsenalLevel]){
             arsenalLevel++;
             $('#arsenal').text(buildingLevelChinese[arsenalLevel]);
-            $('#arsenalText').html('木頭:' + arsenalWood[arsenalLevel] + '  石頭:' + arsenalRock[arsenalLevel]);
+            if(arsenalLevel < 10)
+                $('#arsenalText').html('材料:木頭:' + arsenalWood[arsenalLevel] + '  石頭:' + arsenalRock[arsenalLevel]);
+            else
+                $('#arsenalText').html('已到達等級上限');
         }
     }
 
@@ -295,9 +288,6 @@ $(document).ready(function() {
             ironSum = iron;
         }
 
-
-
-
         showStorge(riceSum, foodSum, woodSum, rockSum, ironSum);
         updateStorge(villagersHTML ,riceSum, foodSum, woodSum, rockSum, ironSum);
         var a = setTimeout(counting, 200);
@@ -305,16 +295,11 @@ $(document).ready(function() {
     counting();
 
     function showStorge(rice, food, wood, rock, iron) {
-        if(rice != 0)
-            $('#rice').show();
-        if(food != 0)
-            $('#food').show();
-        if(wood != 0)
-            $('#wood').show();
-        if(rock != 0)
-            $('#rock').show();
-        if(iron != 0)
-            $('#iron').show();
+        if(rice != 0) $('#rice').show();
+        if(food != 0) $('#food').show();
+        if(wood != 0) $('#wood').show();
+        if(rock != 0) $('#rock').show();
+        if(iron != 0) $('#iron').show();
     }
 
     function updateStorge(villagers, rice, food, wood, rock, iron) {
