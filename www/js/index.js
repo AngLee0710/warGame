@@ -1,21 +1,44 @@
 $(document).ready(function() {
     var CL = console.log;
+
     //村民
     var villagers = 5;
+    //兵工廠
+    var arsenalLevel = 0;
+
+    $('#rice').hide();
+    $('#food').hide();
+    $('#wood').hide();
+    $('#rock').hide();
+    $('#iron').hide();
+    // localStorage.clear();
+    
+    // 讀取資料; 
+    readData();
+    function readData() {  
+        if(localStorage.init){
+            $('#farmers').html(localStorage.farmers);
+            $('#cooks').html(localStorage.cooks);
+            $('#lumberjack').html(localStorage.lumberjack);
+            $('#rockWorkers').html(localStorage.rockWorkers);
+            $('#ironWorkers').html(localStorage.ironWorkers);
+            $('#riceValue').html(localStorage.rice);
+            $('#foodValue').html(localStorage.food);
+            $('#woodValue').html(localStorage.wood);
+            $('#rockValue').html(localStorage.rock);
+            $('#ironValue').html(localStorage.iron);
+            $('#house').html(localStorage.house);
+            arsenalLevel = localStorage.arsenalLevel;
+            villagers = localStorage.villagers;
+            $('#villagers').html(villagers +  '/' + ( 5 + ( localStorage.house * 5 ) ) );
+        }
+    }
 
     //pubilc時間函數
     var time;
 
     var buildingLevelChinese = ['尚未擁有', '等級一', '等級二', '等級三', '等級四',
      '等級五', '等級六', '等級七', '等級八', '等級九', '等級十'];
-
-    //初始化
-    $('#villagers').html(villagers);
-    $('#rice').hide();
-    $('#food').hide();
-    $('#wood').hide();
-    $('#rock').hide();
-    $('#iron').hide();
 
     //滑鼠監聽事件
 
@@ -171,7 +194,6 @@ $(document).ready(function() {
     var arsenalRock = [0, 200, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000];
 
     //鐵工廠Level
-    var arsenalLevel = 0;
     $('#arsenal').click(arsenalFuc);
     function arsenalFuc() {
         if(parseInt($('#woodValue').html()) >= arsenalWood[arsenalLevel] && parseInt($('#rockValue').html()) >= arsenalRock[arsenalLevel]){
@@ -290,6 +312,7 @@ $(document).ready(function() {
 
         showStorge(riceSum, foodSum, woodSum, rockSum, ironSum);
         updateStorge(villagersHTML ,riceSum, foodSum, woodSum, rockSum, ironSum);
+        saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, rice, food, wood, rock, iron, house);
         var a = setTimeout(counting, 200);
     }
     counting();
@@ -309,5 +332,23 @@ $(document).ready(function() {
         $('#woodValue').html(wood);
         $('#rockValue').html(rock);
         $('#ironValue').html(iron);
+    }
+
+    // 資料儲存
+    function saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, rice, food, wood, rock, iron, house) {
+        localStorage.init = true;
+        localStorage.villagers = villagers;
+        localStorage.farmers = farmers;
+        localStorage.cooks = cooks;
+        localStorage.lumberjack = lumberjack;
+        localStorage.rockWorkers = rockWorkers;
+        localStorage.ironWorkers = ironWorkers;
+        localStorage.rice = rice;
+        localStorage.food = food;
+        localStorage.wood = wood;
+        localStorage.rock = rock;
+        localStorage.iron = iron;
+        localStorage.house = house;
+        localStorage.arsenalLevel = arsenalLevel; 
     }
 });
