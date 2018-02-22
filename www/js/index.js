@@ -1,44 +1,79 @@
 $(document).ready(function() {
     var CL = console.log;
 
-    //村民
-    var villagers = 5;
-    //兵工廠
-    var arsenalLevel = 0;
-
     $('#rice').hide();
     $('#food').hide();
     $('#wood').hide();
     $('#rock').hide();
     $('#iron').hide();
-    // localStorage.clear();
-    
-    // 讀取資料; 
-    readData();
-    function readData() {  
-        if(localStorage.init){
-            $('#farmers').html(localStorage.farmers);
-            $('#cooks').html(localStorage.cooks);
-            $('#lumberjack').html(localStorage.lumberjack);
-            $('#rockWorkers').html(localStorage.rockWorkers);
-            $('#ironWorkers').html(localStorage.ironWorkers);
-            $('#riceValue').html(localStorage.rice);
-            $('#foodValue').html(localStorage.food);
-            $('#woodValue').html(localStorage.wood);
-            $('#rockValue').html(localStorage.rock);
-            $('#ironValue').html(localStorage.iron);
-            $('#house').html(localStorage.house);
-            arsenalLevel = localStorage.arsenalLevel;
-            villagers = localStorage.villagers;
-            $('#villagers').html(villagers +  '/' + ( 5 + ( localStorage.house * 5 ) ) );
-        }
-    }
 
-    //pubilc時間函數
+    //共用
     var time;
+
+    var StudyValueTime;
+
+    //村民
+    var villagers = 5;
+
+    //兵工廠
+    var arsenalLevel = 0;
 
     var buildingLevelChinese = ['尚未擁有', '等級一', '等級二', '等級三', '等級四',
      '等級五', '等級六', '等級七', '等級八', '等級九', '等級十'];
+
+    //鐵工廠 材料需求
+    var arsenalWood = [150, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000, 1000000];
+    var arsenalRock = [0, 200, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000];
+
+    // 讀取資料; 
+    readData();
+
+    //建築頁
+    $('#buildPage').hide();
+
+    $('#buildBtn').click(function() {
+        $('#personPage').hide();
+        $('#buildPage').show();
+    });
+
+
+    //兵工廠
+    $('#arsenalBuildPage').hide();
+
+    $('#arsenalBuildBtn').click(function() {
+        $('#buildPage').hide();
+        $('#arsenalBuildPage').show();
+    });
+
+    //兵工廠研發
+
+    var arsenalStudyArray = [$('#BarracksStudy'), $('#woodSwordStudy'), $('#woodSpearStudy'), 
+    $('#woodBowStudy'), $('#rockSwordStudy'), $('#rockSpearStudy'), $('#rockBowStudy'), 
+    $('#ironSwordStudy'), $('#ironSpearStudy'), $('#ironBowStudy'), $('#RefinedIronSwordStudy'), 
+    $('#RefinedIronSpearStudy'), $('#RefinedIronBowStudy'), $('#SwordAttackStudy'), $('#SpearAttackStudy'), 
+    $('#BowAttackStudy'), $('#SwordDefenseStudy'), $('#SpearDefenseStudy'), $('#BowDefenseStudy'), 
+    $('#SwordSpeedStudy'), $('#SpearSpeedStudy'), $('#BowSpeedStudy'), $('#warriorStudy'),
+    $('#WaveKnightStudy'), $('#crossbowStudy')];
+
+    for(var i = 0 ; i < arsenalStudyArray.length ; i++){
+        arsenalStudyArray[i].attr('disabled', 'disabled');
+        arsenalStudyArray[i][0].addEventListener('click', function(dom) {
+            $(this).parent().append('<progress value="0" max="100">');
+            var tempValue = plusCounting();
+        }, false);
+    }
+
+    function plusCounting() {
+        var tempValue = $('progress').val();
+        StudyValueTime = setTimeout(function() {
+            tempValue++;
+            $('progress').val(tempValue);
+            CL($('progress').val());
+            plusCounting();
+        }, 200);
+        if(tempValue >= 100)
+            clearInterval(StudyValueTime);
+    }
 
     //滑鼠監聽事件
 
@@ -173,7 +208,11 @@ $(document).ready(function() {
     $('#houseMake').click(houseMakeFuc);
     $('#houseMake').mousedown(function() {
         time = setInterval(houseMakeFuc, 200);
-    })
+    });
+    $('#houseMake')[0].addEventListener('touchstart', function() {
+        time = setInterval(houseMakeFuc, 200);
+    }, false)
+
 
     function houseMakeFuc() {
         var temp = $('#house').html();
@@ -187,11 +226,6 @@ $(document).ready(function() {
         $('#woodValue').html(woodValue);
     }
 
-    //鐵工廠
-
-    //鐵工廠 材料需求
-    var arsenalWood = [150, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000, 1000000];
-    var arsenalRock = [0, 200, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000];
 
     //鐵工廠Level
     $('#arsenal').click(arsenalFuc);
@@ -312,7 +346,9 @@ $(document).ready(function() {
 
         showStorge(riceSum, foodSum, woodSum, rockSum, ironSum);
         updateStorge(villagersHTML ,riceSum, foodSum, woodSum, rockSum, ironSum);
-        saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, rice, food, wood, rock, iron, house);
+        saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, 
+            rice, food, wood, rock, iron, house);
+        checkBuildUsed();
         var a = setTimeout(counting, 200);
     }
     counting();
@@ -334,9 +370,17 @@ $(document).ready(function() {
         $('#ironValue').html(iron);
     }
 
+    function checkBuildUsed() {
+        if(arsenalLevel > 0){
+            $('#arsenalBuildBtn').removeAttr("disabled");
+        }
+        for(var i = 0 ; i < arsenalLevel * 3 + 1 ; i++)
+            arsenalStudyArray[i].removeAttr("disabled");
+    }
+
     // 資料儲存
     function saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, rice, food, wood, rock, iron, house) {
-        localStorage.init = true;
+        localStorage.init = 1;
         localStorage.villagers = villagers;
         localStorage.farmers = farmers;
         localStorage.cooks = cooks;
@@ -351,4 +395,32 @@ $(document).ready(function() {
         localStorage.house = house;
         localStorage.arsenalLevel = arsenalLevel; 
     }
+
+    //資料讀取
+    function readData() {  
+        if(localStorage.init == 1){
+            $('#farmers').html(localStorage.farmers);
+            $('#cooks').html(localStorage.cooks);
+            $('#lumberjack').html(localStorage.lumberjack);
+            $('#rockWorkers').html(localStorage.rockWorkers);
+            $('#ironWorkers').html(localStorage.ironWorkers);
+            $('#riceValue').html(localStorage.rice);
+            $('#foodValue').html(localStorage.food);
+            $('#woodValue').html(localStorage.wood);
+            $('#rockValue').html(localStorage.rock);
+            $('#ironValue').html(localStorage.iron);
+            $('#house').html(localStorage.house);
+            arsenalLevel = parseInt(localStorage.arsenalLevel);
+            villagers = parseInt(localStorage.villagers);
+            $('#arsenal').text(buildingLevelChinese[parseInt(arsenalLevel)]);
+            $('#villagers').html(villagers +  '/' + ( 5 + ( parseInt(localStorage.house) * 5 ) ) );
+            if(arsenalLevel < 10)
+                $('#arsenalText').html('材料:木頭:' + arsenalWood[arsenalLevel] + '  石頭:' + arsenalRock[arsenalLevel]);
+            else
+                $('#arsenalText').html('已到達等級上限');
+        } else {
+            localStorage.clear();
+        }
+    }
 });
+
