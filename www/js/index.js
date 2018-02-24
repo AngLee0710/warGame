@@ -12,6 +12,10 @@ $(document).ready(function() {
 
     var StudyValueTime;
 
+    //頁面
+    var page = [$('#personPage'), $('#buildPage'), $('#arsenalBuildPage')];
+    var nowPage = 0;
+
     //村民
     var villagers = 5;
 
@@ -25,6 +29,16 @@ $(document).ready(function() {
     var arsenalWood = [150, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000, 1000000];
     var arsenalRock = [0, 200, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000];
 
+    //兵工廠研發
+
+    var arsenalStudyWait = 0;
+
+    var arsenalStudyLevel = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0];
+
+     //兵營材料
+    
+
     // 讀取資料; 
     readData();
 
@@ -32,8 +46,10 @@ $(document).ready(function() {
     $('#buildPage').hide();
 
     $('#buildBtn').click(function() {
-        $('#personPage').hide();
-        $('#buildPage').show();
+        nowPage = 1;
+        page[0].hide();
+        page[1].show();
+        page[2].hide();
     });
 
 
@@ -41,11 +57,19 @@ $(document).ready(function() {
     $('#arsenalBuildPage').hide();
 
     $('#arsenalBuildBtn').click(function() {
-        $('#buildPage').hide();
-        $('#arsenalBuildPage').show();
+        nowPage = 2;
+        page[0].hide();
+        page[1].hide();
+        page[2].show();
     });
 
-    //兵工廠研發
+    var arsenalNameArray = ['BarracksStudy', 'woodSwordStudy', 'woodSpearStudy', 'woodBowStudy', 
+        'rockSwordStudy', 'rockSpearStudy', 'rockBowStudy', 'ironSwordStudy', 'ironSpearStudy', 
+        'ironBowStudy', 'RefinedIronSwordStudy', 'RefinedIronSpearStudy', 'RefinedIronBowStudy', 
+        'SwordAttackStudy', 'SpearAttackStudy', 'BowAttackStudy', 'SwordDefenseStudy', 
+        'SpearDefenseStudy', 'BowDefenseStudy', 'SwordSpeedStudy', 'SpearSpeedStudy', 'BowSpeedStudy',
+        'warriorStudy', 'WaveKnightStudy', 'crossbowStudy'];
+
 
     var arsenalStudyArray = [$('#BarracksStudy'), $('#woodSwordStudy'), $('#woodSpearStudy'), 
     $('#woodBowStudy'), $('#rockSwordStudy'), $('#rockSpearStudy'), $('#rockBowStudy'), 
@@ -55,24 +79,48 @@ $(document).ready(function() {
     $('#SwordSpeedStudy'), $('#SpearSpeedStudy'), $('#BowSpeedStudy'), $('#warriorStudy'),
     $('#WaveKnightStudy'), $('#crossbowStudy')];
 
+    //兵工廠研發
     for(var i = 0 ; i < arsenalStudyArray.length ; i++){
         arsenalStudyArray[i].attr('disabled', 'disabled');
         arsenalStudyArray[i][0].addEventListener('click', function(dom) {
-            $(this).parent().append('<progress value="0" max="100">');
-            var tempValue = plusCounting();
+            if(arsenalStudyWait == 1)
+                return;
+            else
+                arsenalStudyWait = 1;
+            var tempValue = plusCounting(dom.path[0].id,0);
         }, false);
     }
 
-    function plusCounting() {
+    function plusCounting(id,flag) {
+        if(flag == 0){
+            var tempWood = $('#' + id).data('wood');
+            var tempRock = $('#' + id).data('rock');
+            if(parseInt($('#rockValue').html()) >= tempRock && parseInt($('#woodValue').html()) >= tempWood)
+                flag = 1;
+            else{
+                CL('材料不足');
+                return;
+            }
+        }
+        CL('here');
+        $('#' + id).parent().append('<progress value="0" max="100">');
         var tempValue = $('progress').val();
         StudyValueTime = setTimeout(function() {
             tempValue++;
             $('progress').val(tempValue);
-            CL($('progress').val());
-            plusCounting();
+            plusCounting(id,flag);
         }, 200);
-        if(tempValue >= 100)
+        if(tempValue >= 100){
             clearInterval(StudyValueTime);
+            CL(id);
+            for(var i = 0; i < arsenalNameArray.length ; i++) {
+                if(id == arsenalNameArray[i]) {
+                    arsenalStudyLevel[i] = 1;
+                }
+            }
+            $('progress').remove();
+            arsenalStudyWait = 0; 
+        }
     }
 
     //滑鼠監聽事件
@@ -125,6 +173,16 @@ $(document).ready(function() {
     $(document).mouseup(function() {
         clearInterval(time);
     });
+    $(document).on('swiperight', function(){
+        if(nowPage == 0)
+            return;
+        else {
+            page[nowPage].hide();
+            page[0].show();
+            nowPage = 0;
+        }
+    });
+
 
     function Upper(id) {
         var jqueryId = id;
@@ -156,13 +214,14 @@ $(document).ready(function() {
     var peopleScan = [$('#farmers'), $('#cooks'), $('#lumberjack'), $('#rockWorkers'), 
         $('#ironWorkers'), $('#house')];
 
-    var TFHDomId = [$('#plusTen'), $('#plusFifty'), $('#plusHundred'), $('#plusThousand')];
+    var TFHDomId = [$('#plusTen'), $('#plusFifty'), $('#plusHundred'), $('#plusThousand'), $('#plusTenThousand')];
 
     //共用ID
     var clickBeforeID;
 
     for(var i = 0 ; i < peopleScan.length ; i++) {  
         peopleScan[i].click(function(dom) {
+            $('#thisNum').html(dom.currentTarget.innerHTML);
             $('.bg').css({'display':'block'});
             $('.content').css({'display':'block'});
             clickBeforeID = dom.currentTarget.id;
@@ -197,6 +256,7 @@ $(document).ready(function() {
             villagers -= num;
             temp = parseInt($(jqueryStr.toString()).html());
             temp += num;
+            $('#thisNum').html(temp);
             $(jqueryStr.toString()).html(temp)
         }
     }
@@ -376,6 +436,11 @@ $(document).ready(function() {
         }
         for(var i = 0 ; i < arsenalLevel * 3 + 1 ; i++)
             arsenalStudyArray[i].removeAttr("disabled");
+        //兵工廠研發
+        for(var i = 0 ; i < arsenalNameArray.length ; i++) {
+            if(arsenalStudyLevel[i] > 0)
+                arsenalStudyArray[i].attr('disabled', 'disabled');
+        }
     }
 
     // 資料儲存
@@ -393,7 +458,10 @@ $(document).ready(function() {
         localStorage.rock = rock;
         localStorage.iron = iron;
         localStorage.house = house;
-        localStorage.arsenalLevel = arsenalLevel; 
+        localStorage.arsenalLevel = arsenalLevel;
+        for(var i = 0 ; i < arsenalStudyLevel.length; i++){
+            localStorage.arsenalStudyLevel = arsenalStudyLevel;   
+        }
     }
 
     //資料讀取
@@ -418,6 +486,7 @@ $(document).ready(function() {
                 $('#arsenalText').html('材料:木頭:' + arsenalWood[arsenalLevel] + '  石頭:' + arsenalRock[arsenalLevel]);
             else
                 $('#arsenalText').html('已到達等級上限');
+                arsenalStudyLevel = localStorage.arsenalStudyLevel.split(',');
         } else {
             localStorage.clear();
         }

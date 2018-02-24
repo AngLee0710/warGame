@@ -7,7 +7,8 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/jquery-1.12.4.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
         <!-- <script src="js/jquery.mobile-1.4.5.min.js"></script> -->
         <title>app</title>
     </head>
@@ -20,29 +21,29 @@
                         <span>村民:<span id="villagers"></span></span><br />
                         <!-- 農夫 -->
                         <span>農夫:</span>
-                        <button id="farmersLower">-</button>
+                        <button class="ui-btn ui-btn-inline ui-mini" id="farmersLower">-</button>
                         <span id="farmers">0</span>
-                        <button id="farmersUpper">+</button><br />
+                        <button class="ui-btn ui-btn-inline ui-mini" id="farmersUpper">+</button><br />
                         <!-- 廚夫 -->
                         <span>廚夫:</span>
-                        <button id="cooksLower">-</button>
+                        <button class="ui-btn ui-btn-inline ui-mini" id="cooksLower">-</button>
                         <span id="cooks">0</span>
-                        <button id="cooksUpper">+</button><br />
+                        <button class="ui-btn ui-btn-inline ui-mini" id="cooksUpper">+</button><br />
                         <!-- 伐木工 -->
                         <span>伐木工:</span>
-                        <button id="lumberjackLower">-</button>
+                        <button class="ui-btn ui-btn-inline ui-mini" id="lumberjackLower">-</button>
                         <span id="lumberjack">0</span>
-                        <button id="lumberjackUpper">+</button><br />
+                        <button class="ui-btn ui-btn-inline ui-mini" id="lumberjackUpper">+</button><br />
                         <!-- 石礦工 -->
                         <span>石礦工:</span>
-                        <button id="rockWorkersLower">-</button>
+                        <button class="ui-btn ui-btn-inline ui-mini" id="rockWorkersLower">-</button>
                         <span id="rockWorkers">0</span>
-                        <button id="rockWorkersUpper">+</button><br />
+                        <button class="ui-btn ui-btn-inline ui-mini" id="rockWorkersUpper">+</button><br />
                         <!-- 鐵礦工 -->
                         <span>鐵礦工:</span>
-                        <button id="ironWorkersLower">-</button>
+                        <button class="ui-btn ui-btn-inline ui-mini" id="ironWorkersLower">-</button>
                         <span id="ironWorkers">0</span>
-                        <button id="ironWorkersUpper">+</button><br />
+                        <button class="ui-btn ui-btn-inline ui-mini" id="ironWorkersUpper">+</button><br />
                     </div>
                     <div class="ui-block-b" style="height: 100%;">
                         <span>倉庫:</span><br />
@@ -54,129 +55,125 @@
                     </div>
                 </div><br />
                 <div class="ui-grid-a" style="height:95px">
-                    <div class="ui-block-a" style="height:100%">
-                        <span>建築:</span><br />
-                        <span>房舍:
-                            <span id="house">0</span>
-                        </span>
-                        <button id="houseMake">製作</button><br />
-                        <span>材料:木頭x20</span><br />
-                        <span>兵工廠:
-                            <button id="arsenal">尚未擁有</button><br />
-                            <span id="arsenalText">材料:木頭x150</span>
-                        </span>
-                    </div>
-                    <div class="ui-block-b" style="height:100%">
-                        <a class="ui-btn" id="buildBtn">建築</a>
-                    </div>
+                    <a class="ui-btn" id="buildBtn">建築</a>
                 </div>
         </div>
         <div class="bg"></div>
         <div class="content">
+            <span style="size: 20px;color: white;">目前工作人數:<span id="thisNum"></span></span>
             <button id="plusTen" class="ui-btn">10</button>
             <button id="plusFifty" class="ui-btn">50</button>
             <button id="plusHundred" class="ui-btn">100</button>
             <button id="plusThousand" class="ui-btn">1000</button>
+            <button id="plusTenThousand" class="ui-btn">10000</button>
         </div>
         <div id="buildPage">
             <div role="main" class="ui-content">
-                兵工廠:<button disabled="false"  id="arsenalBuildBtn">進去</button>
+                <span>房舍:
+                    <span id="house">0</span>
+                </span>
+                <button class="ui-btn ui-btn-inline ui-mini" id="houseMake">製作</button><br />
+                <span>材料:木頭x20</span><br />
+                <span>兵工廠:
+                    <button class="ui-btn ui-btn-inline ui-mini" id="arsenal">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="arsenalBuildBtn">進去</button><br />
+                    <span id="arsenalText">材料:木頭x150</span>
+                </span>
             </div>
         </div>
         <div id="arsenalBuildPage">
             <div class="ui-grid-b" style="height:95px">
                 <div class="ui-block-a" style="height:100%"></div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="BarracksStudy">兵營研發</button><br />
+                <div class="ui-block-b centerDIV" style="height:100%;">
+                    <button id="BarracksStudy" data-wood="25000" data-rock="15000">兵營研發</button>
                 </div>
                 <div class="ui-block-c" style="height:100%"></div>
             </div>
             <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="woodSwordStudy">木劍兵研發</button><br /> 
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="woodSwordStudy">木劍兵研發</button> 
                 </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="woodSpearStudy">木槍騎兵研發</button><br />
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="woodSpearStudy">木槍騎兵研發</button>
                 </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="woodBowStudy">木箭矢弓兵研發</button><br />                     
-                </div>
-            </div>
-            <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="rockSwordStudy">石劍兵研發</button><br />                  
-                </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="rockSpearStudy">石槍騎兵研發</button><br />                     
-                </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="rockBowStudy">石箭矢弓兵研發</button><br />                    
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="woodBowStudy">木箭矢弓兵研發</button>                     
                 </div>
             </div>
             <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="ironSwordStudy">鐵劍兵研發</button><br />
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="rockSwordStudy">石劍兵研發</button>                  
                 </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="ironSpearStudy">鐵槍騎兵研發</button><br />
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="rockSpearStudy">石槍騎兵研發</button>                     
                 </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="ironBowStudy">鐵箭矢弓兵研發</button><br />
-                </div>
-            </div>
-            <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="RefinedIronSwordStudy">精銳鐵劍兵研發</button><br />
-                </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="RefinedIronSpearStudy">精銳鐵槍兵研發</button><br />
-                </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="RefinedIronBowStudy">精銳鐵箭矢弓兵研發</button><br />
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="rockBowStudy">石箭矢弓兵研發</button>                    
                 </div>
             </div>
             <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="SwordAttackStudy">步兵攻擊研發</button><br />
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="ironSwordStudy">鐵劍兵研發</button>
                 </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="SpearAttackStudy">騎兵攻擊研發</button><br />
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="ironSpearStudy">鐵槍騎兵研發</button>
                 </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="BowAttackStudy">弓兵攻擊研發</button><br />
-                </div>
-            </div>
-            <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="SwordDefenseStudy">步兵防禦研發</button><br />
-                </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="SpearDefenseStudy">騎兵防禦研發</button><br />
-                </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="BowDefenseStudy">弓兵防禦研發</button><br />
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="ironBowStudy">鐵箭矢弓兵研發</button>
                 </div>
             </div>
             <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="SwordSpeedStudy">步兵速度研發</button><br />
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="RefinedIronSwordStudy">精銳鐵劍兵研發</button>
                 </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="SpearSpeedStudy">騎兵速度研發</button><br />
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="RefinedIronSpearStudy">精銳鐵槍兵研發</button>
                 </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="BowSpeedStudy">弓兵速度研發</button><br /> 
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="RefinedIronBowStudy">精銳鐵箭矢弓兵研發</button>
                 </div>
             </div>
             <div class="ui-grid-b" style="height:95px">
-                <div class="ui-block-a" style="height:100%">
-                    <button id="warriorStudy">戰士兵種研發</button><br />
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="SwordAttackStudy">步兵攻擊研發</button>
                 </div>
-                <div class="ui-block-b" style="height:100%">
-                    <button id="WaveKnightStudy">虎豹騎兵種研發</button><br />
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="SpearAttackStudy">騎兵攻擊研發</button>
                 </div>
-                <div class="ui-block-c" style="height:100%">
-                    <button id="crossbowStudy">弩弓兵研發</button><br />
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="BowAttackStudy">弓兵攻擊研發</button>
+                </div>
+            </div>
+            <div class="ui-grid-b" style="height:95px">
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="SwordDefenseStudy">步兵防禦研發</button>
+                </div>
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="SpearDefenseStudy">騎兵防禦研發</button>
+                </div>
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="BowDefenseStudy">弓兵防禦研發</button>
+                </div>
+            </div>
+            <div class="ui-grid-b" style="height:95px">
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="SwordSpeedStudy">步兵速度研發</button>
+                </div>
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="SpearSpeedStudy">騎兵速度研發</button>
+                </div>
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="BowSpeedStudy">弓兵速度研發</button> 
+                </div>
+            </div>
+            <div class="ui-grid-b" style="height:95px">
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <button id="warriorStudy">戰士兵種研發</button>
+                </div>
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <button id="WaveKnightStudy">虎豹騎兵種研發</button>
+                </div>
+                <div class="ui-block-c centerDIV" style="height:100%">
+                    <button id="crossbowStudy">弩弓兵研發</button>
                 </div>
             </div>
         </div>
