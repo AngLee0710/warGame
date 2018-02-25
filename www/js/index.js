@@ -91,6 +91,8 @@ $(document).ready(function() {
         }, false);
     }
 
+    var spanFlagForPlusCounting = 1;
+    var progresFlagForPlusCounting = 1;
     function plusCounting(id,flag) {
         if(flag == 0){
             var tempWood = $('#' + id).data('wood');
@@ -98,12 +100,22 @@ $(document).ready(function() {
             if(parseInt($('#rockValue').html()) >= tempRock && parseInt($('#woodValue').html()) >= tempWood)
                 flag = 1;
             else{
-                CL('材料不足');
+                if(spanFlagForPlusCounting){
+                    spanFlagForPlusCounting = 0;
+                    $('#' + id).parent().append('<span>材料不足!!</span>');
+                    $('#' + id).parent().children('span').delay(1500).fadeOut(function(){
+                        $('#' + id).parent().children('span').remove();
+                        spanFlagForPlusCounting = 1;
+                    });
+                }
+                arsenalStudyWait = 0;
                 return;
             }
         }
-        CL('here');
-        $('#' + id).parent().append('<progress value="0" max="100">');
+        if(progresFlagForPlusCounting) {
+            $('#' + id).parent().append('<progress value="0" max="100">');
+            progresFlagForPlusCounting = 0;
+        }
         var tempValue = $('progress').val();
         StudyValueTime = setTimeout(function() {
             tempValue++;
@@ -112,7 +124,7 @@ $(document).ready(function() {
         }, 200);
         if(tempValue >= 100){
             clearInterval(StudyValueTime);
-            CL(id);
+            progresFlagForPlusCounting = 1;
             for(var i = 0; i < arsenalNameArray.length ; i++) {
                 if(id == arsenalNameArray[i]) {
                     arsenalStudyLevel[i] = 1;
@@ -251,6 +263,8 @@ $(document).ready(function() {
                 temp = parseInt($(jqueryStr).html());
                 temp += num;
                 $(jqueryStr).html(temp);
+                $('#thisNum').parent().html('目前房屋數目：');
+                $('#thisNum').html(temp);
             }
         } else if(villagers >= num) {
             villagers -= num;
@@ -329,7 +343,7 @@ $(document).ready(function() {
         var ironWorkers = parseInt($('#ironWorkers').html());
         
         //村民
-        var villagersHTML = villagers +  '/' + ( 5 + ( house * 5 ) );  
+        var villagersHTML = villagers +  '/' + ( 5 + ( house * 5 ) );
 
         //稻米
         var riceSum = 0;
@@ -445,7 +459,7 @@ $(document).ready(function() {
 
     // 資料儲存
     function saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, rice, food, wood, rock, iron, house) {
-        localStorage.init = 1;
+        localStorage.init = 0;
         localStorage.villagers = villagers;
         localStorage.farmers = farmers;
         localStorage.cooks = cooks;
@@ -459,14 +473,12 @@ $(document).ready(function() {
         localStorage.iron = iron;
         localStorage.house = house;
         localStorage.arsenalLevel = arsenalLevel;
-        for(var i = 0 ; i < arsenalStudyLevel.length; i++){
-            localStorage.arsenalStudyLevel = arsenalStudyLevel;   
-        }
+        localStorage.arsenalStudyLevel = arsenalStudyLevel;
     }
 
     //資料讀取
     function readData() {  
-        if(localStorage.init == 1){
+        if(localStorage.init == 0){
             $('#farmers').html(localStorage.farmers);
             $('#cooks').html(localStorage.cooks);
             $('#lumberjack').html(localStorage.lumberjack);
@@ -486,7 +498,7 @@ $(document).ready(function() {
                 $('#arsenalText').html('材料:木頭:' + arsenalWood[arsenalLevel] + '  石頭:' + arsenalRock[arsenalLevel]);
             else
                 $('#arsenalText').html('已到達等級上限');
-                arsenalStudyLevel = localStorage.arsenalStudyLevel.split(',');
+            arsenalStudyLevel = localStorage.arsenalStudyLevel.split(',');
         } else {
             localStorage.clear();
         }
