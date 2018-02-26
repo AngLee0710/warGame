@@ -1,15 +1,16 @@
 $(document).ready(function() {
     var CL = console.log;
 
+    //倉庫初始化
     $('#rice').hide();
     $('#food').hide();
     $('#wood').hide();
     $('#rock').hide();
     $('#iron').hide();
 
-    //共用
+    //新增減少時間種子
     var time;
-
+    //兵工廠研發時間種子
     var StudyValueTime;
 
     //頁面
@@ -22,6 +23,7 @@ $(document).ready(function() {
     //兵工廠
     var arsenalLevel = 0;
 
+    //建築物等級表
     var buildingLevelChinese = ['尚未擁有', '等級一', '等級二', '等級三', '等級四',
      '等級五', '等級六', '等級七', '等級八', '等級九', '等級十'];
 
@@ -29,22 +31,21 @@ $(document).ready(function() {
     var arsenalWood = [150, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000, 1000000];
     var arsenalRock = [0, 200, 500, 1000, 5000, 9500, 25000, 100000, 250000, 500000];
 
-    //兵工廠研發
-
+    //兵工廠研發等待鑰匙
     var arsenalStudyWait = 0;
-
+    //兵工廠研發等級表
     var arsenalStudyLevel = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0, 0, 0];
-
-     //兵營材料
-    
 
     // 讀取資料; 
     readData();
 
-    //建築頁
+    //建築頁初始化
     $('#buildPage').hide();
+    //兵工廠頁面初始化
+    $('#arsenalBuildPage').hide();
 
+    //切換建築頁面
     $('#buildBtn').click(function() {
         nowPage = 1;
         page[0].hide();
@@ -52,10 +53,7 @@ $(document).ready(function() {
         page[2].hide();
     });
 
-
-    //兵工廠
-    $('#arsenalBuildPage').hide();
-
+    //切換兵工廠頁面
     $('#arsenalBuildBtn').click(function() {
         nowPage = 2;
         page[0].hide();
@@ -63,6 +61,7 @@ $(document).ready(function() {
         page[2].show();
     });
 
+    //兵工廠研發科技ID表
     var arsenalNameArray = ['BarracksStudy', 'woodSwordStudy', 'woodSpearStudy', 'woodBowStudy', 
         'rockSwordStudy', 'rockSpearStudy', 'rockBowStudy', 'ironSwordStudy', 'ironSpearStudy', 
         'ironBowStudy', 'RefinedIronSwordStudy', 'RefinedIronSpearStudy', 'RefinedIronBowStudy', 
@@ -70,7 +69,7 @@ $(document).ready(function() {
         'SpearDefenseStudy', 'BowDefenseStudy', 'SwordSpeedStudy', 'SpearSpeedStudy', 'BowSpeedStudy',
         'warriorStudy', 'WaveKnightStudy', 'crossbowStudy'];
 
-
+    //兵工廠研發科技JQ表
     var arsenalStudyArray = [$('#BarracksStudy'), $('#woodSwordStudy'), $('#woodSpearStudy'), 
     $('#woodBowStudy'), $('#rockSwordStudy'), $('#rockSpearStudy'), $('#rockBowStudy'), 
     $('#ironSwordStudy'), $('#ironSpearStudy'), $('#ironBowStudy'), $('#RefinedIronSwordStudy'), 
@@ -79,7 +78,7 @@ $(document).ready(function() {
     $('#SwordSpeedStudy'), $('#SpearSpeedStudy'), $('#BowSpeedStudy'), $('#warriorStudy'),
     $('#WaveKnightStudy'), $('#crossbowStudy')];
 
-    //兵工廠研發
+    //兵工廠研發科技初始化
     for(var i = 0 ; i < arsenalStudyArray.length ; i++){
         arsenalStudyArray[i].attr('disabled', 'disabled');
         arsenalStudyArray[i][0].addEventListener('click', function(dom) {
@@ -91,8 +90,11 @@ $(document).ready(function() {
         }, false);
     }
 
+    //兵工廠Span元素鑰匙
     var spanFlagForPlusCounting = 1;
-    var progresFlagForPlusCounting = 1;
+    //兵工廠progress元素鑰匙
+    var progressFlagForPlusCounting = 1;
+    //兵工廠研發科技主程式
     function plusCounting(id,flag) {
         if(flag == 0){
             var tempWood = $('#' + id).data('wood');
@@ -135,56 +137,60 @@ $(document).ready(function() {
         }
     }
 
-    //滑鼠監聽事件
-
+    //工人增加按鈕元素
     var peopleUpperBtn = [$('#farmersUpper'), $('#cooksUpper'), $('#lumberjackUpper'), $('#rockWorkersUpper'),
         $('#ironWorkersUpper')];
 
+    //工人減少按鈕元素
     var peopleLowerBtn = [$('#farmersLower'), $('#cooksLower'), $('#lumberjackLower'),
         $('#ironWorkersLower'), $('#rockWorkersLower')];
 
+    //工人增加、減少事件宣告
     for(var i = 0 ; i < peopleUpperBtn.length ; i++) {
         peopleUpperBtn[i][0].addEventListener('click', function(dom) {
-            Upper(dom.path[0].id);
+            UpperAndDown(dom.path[0].id, 'Up');
+        }, false);
+
+        peopleLowerBtn[i][0].addEventListener('click', function(dom) {
+            UpperAndDown(dom.path[0].id, 'Down');
         }, false);
 
         peopleUpperBtn[i][0].addEventListener('touchstart', function(dom) {
             time = setInterval(function() {
-                Upper(dom.path[0].id);
+                UpperAndDown(dom.path[0].id, 'Up');
+            }, 200);
+        }, false);
+
+        peopleLowerBtn[i][0].addEventListener('touchstart', function(dom) {
+            time = setInterval(function() {
+                UpperAndDown(dom.path[0].id, 'Down');
             }, 200);
         }, false);
 
         peopleUpperBtn[i].mousedown(function(dom) {
             time = setInterval(function() {
-                Upper(dom.currentTarget.id);
+                UpperAndDown(dom.currentTarget.id, 'Up');
             }, 200);
         });
-    } 
-    for(var i = 0 ; i < peopleLowerBtn.length ; i++) {
-        peopleLowerBtn[i][0].addEventListener('click', function(dom) {
-            Lower(dom.path[0].id);
-        }, false);
-
-        peopleLowerBtn[i][0].addEventListener('touchstart', function(dom) {
-            time = setInterval(function() {
-                Lower(dom.path[0].id);
-            }, 200);
-        }, false);
 
         peopleLowerBtn[i].mousedown(function(dom) {
             time = setInterval(function() {
-                Lower(dom.currentTarget.id);
+                UpperAndDown(dom.currentTarget.id, 'Down');
             }, 200);
         });
     }
 
+    //滑鼠長壓結束事件宣告
     document.addEventListener('touchend', function() {
         clearInterval(time);
     }, false)
 
+    //滑鼠發開事件宣告
     $(document).mouseup(function() {
         clearInterval(time);
     });
+
+    //滑鼠又滑回上一頁事件宣告
     $(document).on('swiperight', function(){
         if(nowPage == 0)
             return;
@@ -195,42 +201,39 @@ $(document).ready(function() {
         }
     });
 
-
-    function Upper(id) {
+    function UpperAndDown(id, str) {
         var jqueryId = id;
         var jqueryStr = '#' + jqueryId.toString();
         var jqueryStr = jqueryStr.substring(0, jqueryStr.length - 5);
         var temp = $(jqueryStr.toString()).html();
-        if(villagers > 0){
-            temp++;
-            villagers--;
+        if(str == 'Up') {
+            if(villagers > 0){
+                temp++;
+                villagers--;
+            }
+        } else {
+            if(temp == 0)
+                temp = 0;
+            else{
+                temp--;
+                villagers++;
+            }
         }
         $(jqueryStr.toString()).html(temp);
     }
 
-    function Lower(id) {
-        var jqueryId = id;
-        var jqueryStr = '#' + jqueryId.toString();
-        var jqueryStr = jqueryStr.substring(0, jqueryStr.length - 5);
-        var temp = $(jqueryStr.toString()).html();
-        if(temp == 0)
-            temp = 0;
-        else{
-            temp--;
-            villagers++;
-        }
-        $(jqueryStr.toString()).html(temp);
-    }
-
-    //遮罩效果
+    //工人Span Dom列表
     var peopleScan = [$('#farmers'), $('#cooks'), $('#lumberjack'), $('#rockWorkers'), 
         $('#ironWorkers'), $('#house')];
 
+    //個、十、百、千、萬 按鈕元素 列表    
     var TFHDomId = [$('#plusTen'), $('#plusFifty'), $('#plusHundred'), $('#plusThousand'), $('#plusTenThousand')];
 
     //共用ID
     var clickBeforeID;
 
+
+    //遮罩事件宣告
     for(var i = 0 ; i < peopleScan.length ; i++) {  
         peopleScan[i].click(function(dom) {
             $('#thisNum').html(dom.currentTarget.innerHTML);
@@ -239,18 +242,26 @@ $(document).ready(function() {
             clickBeforeID = dom.currentTarget.id;
         });
     }
-
+    //個、十、百、千、萬 按鈕事件宣告
     for(var i = 0 ; i < TFHDomId.length ; i++) {
         TFHDomId[i].click(function(dom) {
             UpperMore(dom.currentTarget.id, parseInt(dom.currentTarget.innerHTML));
         });
+
+        TFHDomId[i][0].addEventListener('touchstart', function(dom) {
+            time = setInterval(function() {
+                UpperMore(dom.currentTarget.id, parseInt(dom.currentTarget.innerHTML));
+            }, 200);
+        }, false);
     }
 
+    //結束遮罩事件宣告
     $('.bg').click(function(){
         $('.bg').css({'display':'none'});
         $('.content').css({'display':'none'});
     }); 
 
+    //個、十、百、千、萬 按鈕副程式
     function UpperMore(id, num) {
         var jqueryStr = '#' + clickBeforeID;
         var temp = 0;
@@ -275,11 +286,9 @@ $(document).ready(function() {
         }
     }
 
-    
-    //建築
-    //房屋
-
+    //房屋新增按鈕點擊事件宣告
     $('#houseMake').click(houseMakeFuc);
+    //房屋新增按鈕長壓事件宣告
     $('#houseMake').mousedown(function() {
         time = setInterval(houseMakeFuc, 200);
     });
@@ -287,7 +296,7 @@ $(document).ready(function() {
         time = setInterval(houseMakeFuc, 200);
     }, false)
 
-
+    //房屋新增 副程式
     function houseMakeFuc() {
         var temp = $('#house').html();
         var woodValue = parseInt($('#woodValue').html());
@@ -301,8 +310,10 @@ $(document).ready(function() {
     }
 
 
-    //鐵工廠Level
+    //兵工廠點擊事件宣告
     $('#arsenal').click(arsenalFuc);
+
+    //兵工廠點擊事件 副程式
     function arsenalFuc() {
         if(parseInt($('#woodValue').html()) >= arsenalWood[arsenalLevel] && parseInt($('#rockValue').html()) >= arsenalRock[arsenalLevel]){
             arsenalLevel++;
@@ -314,8 +325,7 @@ $(document).ready(function() {
         }
     }
 
-    //生產
-
+    //生產 副程式
     function counting() {
         //稻米
         var rice = parseInt($('#riceValue').html());
@@ -424,9 +434,9 @@ $(document).ready(function() {
             rice, food, wood, rock, iron, house);
         checkBuildUsed();
         var a = setTimeout(counting, 200);
-    }
-    counting();
+    } counting();
 
+    //顯示倉庫資訊 副程式
     function showStorge(rice, food, wood, rock, iron) {
         if(rice != 0) $('#rice').show();
         if(food != 0) $('#food').show();
@@ -435,6 +445,7 @@ $(document).ready(function() {
         if(iron != 0) $('#iron').show();
     }
 
+    //更新倉庫資訊 副程式
     function updateStorge(villagers, rice, food, wood, rock, iron) {
         $('#villagers').html(villagers);
         $('#riceValue').html(rice);
@@ -444,13 +455,14 @@ $(document).ready(function() {
         $('#ironValue').html(iron);
     }
 
+    //確認建築物是否能使用 副程式
     function checkBuildUsed() {
         if(arsenalLevel > 0){
             $('#arsenalBuildBtn').removeAttr("disabled");
         }
         for(var i = 0 ; i < arsenalLevel * 3 + 1 ; i++)
             arsenalStudyArray[i].removeAttr("disabled");
-        //兵工廠研發
+        //兵工廠研發科技按鈕 確認
         for(var i = 0 ; i < arsenalNameArray.length ; i++) {
             if(arsenalStudyLevel[i] > 0)
                 arsenalStudyArray[i].attr('disabled', 'disabled');
@@ -504,4 +516,3 @@ $(document).ready(function() {
         }
     }
 });
-
