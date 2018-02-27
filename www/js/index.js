@@ -14,7 +14,7 @@ $(document).ready(function() {
     var StudyValueTime;
 
     //頁面
-    var page = [$('#personPage'), $('#buildPage'), $('#arsenalBuildPage')];
+    var page = [$('#personPage'), $('#buildPage'), $('#arsenalBuildPage'), $('#barracksBuildPage')];
     var nowPage = 0;
 
     //村民
@@ -47,19 +47,25 @@ $(document).ready(function() {
 
     //切換建築頁面
     $('#buildBtn').click(function() {
-        nowPage = 1;
-        page[0].hide();
+        page[nowPage].hide();
         page[1].show();
-        page[2].hide();
+        nowPage = 1;
     });
 
     //切換兵工廠頁面
     $('#arsenalBuildBtn').click(function() {
-        nowPage = 2;
-        page[0].hide();
-        page[1].hide();
+        page[nowPage].hide();
         page[2].show();
+        nowPage = 2;
     });
+
+    //切換兵營頁面
+    $('#barracksBuildBtn').click(function() {
+        page[nowPage].hide();
+        page[3].show();
+        nowPage = 3;
+    });
+
 
     //兵工廠研發科技ID表
     var arsenalNameArray = ['BarracksStudy', 'woodSwordStudy', 'woodSpearStudy', 'woodBowStudy', 
@@ -114,9 +120,9 @@ $(document).ready(function() {
                 return;
             }
         }
-        if(progresFlagForPlusCounting) {
+        if(progressFlagForPlusCounting ) {
             $('#' + id).parent().append('<progress value="0" max="100">');
-            progresFlagForPlusCounting = 0;
+            progressFlagForPlusCounting = 0;
         }
         var tempValue = $('progress').val();
         StudyValueTime = setTimeout(function() {
@@ -126,7 +132,7 @@ $(document).ready(function() {
         }, 200);
         if(tempValue >= 100){
             clearInterval(StudyValueTime);
-            progresFlagForPlusCounting = 1;
+            progressFlagForPlusCounting = 1;
             for(var i = 0; i < arsenalNameArray.length ; i++) {
                 if(id == arsenalNameArray[i]) {
                     arsenalStudyLevel[i] = 1;
@@ -223,8 +229,11 @@ $(document).ready(function() {
     }
 
     //工人Span Dom列表
-    var peopleScan = [$('#farmers'), $('#cooks'), $('#lumberjack'), $('#rockWorkers'), 
-        $('#ironWorkers'), $('#house')];
+    var peopleSpan = [$('#farmers'), $('#cooks'), $('#lumberjack'), $('#rockWorkers'), 
+        $('#ironWorkers')];
+
+    //建築Span Dom列表
+    var BuildSpan = [$('#house')];
 
     //個、十、百、千、萬 按鈕元素 列表    
     var TFHDomId = [$('#plusTen'), $('#plusFifty'), $('#plusHundred'), $('#plusThousand'), $('#plusTenThousand')];
@@ -234,14 +243,23 @@ $(document).ready(function() {
 
 
     //遮罩事件宣告
-    for(var i = 0 ; i < peopleScan.length ; i++) {  
-        peopleScan[i].click(function(dom) {
-            $('#thisNum').html(dom.currentTarget.innerHTML);
+    for(var i = 0 ; i < peopleSpan.length ; i++) {  
+        peopleSpan[i].click(function(dom) {
+            $('#thisNum').html('目前工作人數：' + dom.currentTarget.innerHTML);
             $('.bg').css({'display':'block'});
             $('.content').css({'display':'block'});
             clickBeforeID = dom.currentTarget.id;
         });
     }
+    for(var i = 0 ; i < BuildSpan.length ; i++) {
+        BuildSpan[i].click(function(dom) {
+            $('#thisNum').html('目前房屋數目：' + dom.currentTarget.innerHTML);
+            $('.bg').css({'display':'block'});
+            $('.content').css({'display':'block'});
+            clickBeforeID = dom.currentTarget.id;
+        });
+    }
+    
     //個、十、百、千、萬 按鈕事件宣告
     for(var i = 0 ; i < TFHDomId.length ; i++) {
         TFHDomId[i].click(function(dom) {
@@ -250,7 +268,7 @@ $(document).ready(function() {
 
         TFHDomId[i][0].addEventListener('touchstart', function(dom) {
             time = setInterval(function() {
-                UpperMore(dom.currentTarget.id, parseInt(dom.currentTarget.innerHTML));
+                UpperMore(dom.path[0].id, parseInt(dom.path[0].innerHTML));
             }, 200);
         }, false);
     }
@@ -274,15 +292,16 @@ $(document).ready(function() {
                 temp = parseInt($(jqueryStr).html());
                 temp += num;
                 $(jqueryStr).html(temp);
-                $('#thisNum').parent().html('目前房屋數目：');
+                var temp = '目前房屋數目：' + temp;
                 $('#thisNum').html(temp);
             }
         } else if(villagers >= num) {
             villagers -= num;
             temp = parseInt($(jqueryStr.toString()).html());
             temp += num;
-            $('#thisNum').html(temp);
             $(jqueryStr.toString()).html(temp)
+            var temp = '目前工作人數：' + temp;
+            $('#thisNum').html(temp);
         }
     }
 
@@ -324,6 +343,20 @@ $(document).ready(function() {
                 $('#arsenalText').html('已到達等級上限');
         }
     }
+
+    //兵營點擊事件
+    $('#barracks').click(function() {
+        var wood = $('#woodValue').html();
+        var rock = $('#rockValue').html();
+
+        if(parseInt(wood) >= 150000 && parseInt(rock) >= 2500 && arsenalStudyLevel[0]) {
+            $(this).text('已擁有');
+            $('#barracksText').remove();
+            $(this).attr('disabled', 'disabled');
+            $('#barracksBuildBtn').removeAttr("disabled");
+        }
+    });
+
 
     //生產 副程式
     function counting() {
@@ -460,6 +493,8 @@ $(document).ready(function() {
         if(arsenalLevel > 0){
             $('#arsenalBuildBtn').removeAttr("disabled");
         }
+        if(arsenalLevel >= 10)
+            $('#arsenalText').remove();
         for(var i = 0 ; i < arsenalLevel * 3 + 1 ; i++)
             arsenalStudyArray[i].removeAttr("disabled");
         //兵工廠研發科技按鈕 確認
