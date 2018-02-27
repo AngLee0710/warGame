@@ -60,7 +60,7 @@
         </div>
         <div class="bg"></div>
         <div class="content">
-            <span style="size: 20px;color: white;">目前工作人數:<span id="thisNum"></span></span>
+            <span style="size: 20px;color: white;"><span id="thisNum"></span></span>
             <button id="plusTen" class="ui-btn">10</button>
             <button id="plusFifty" class="ui-btn">50</button>
             <button id="plusHundred" class="ui-btn">100</button>
@@ -77,6 +77,10 @@
                 <span>兵工廠:
                     <button class="ui-btn ui-btn-inline ui-mini" id="arsenal">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="arsenalBuildBtn">進去</button><br />
                     <span id="arsenalText">材料:木頭x150</span>
+                </span><br />
+                <span>兵營:
+                    <button class="ui-btn ui-btn-inline ui-mini" id="barracks">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="barracksBuildBtn">進去</button><br />
+                    <span id="barracksText">材料:木頭x15000 石頭x2500</span>
                 </span>
             </div>
         </div>
@@ -90,13 +94,13 @@
             </div>
             <div class="ui-grid-b" style="height:95px">
                 <div class="ui-block-a centerDIV" style="height:100%">
-                    <button id="woodSwordStudy">木劍兵研發</button> 
+                    <button id="woodSwordStudy" data-wood="25000" data-food="25000">木劍兵研發</button> 
                 </div>
                 <div class="ui-block-b centerDIV" style="height:100%">
-                    <button id="woodSpearStudy">木槍騎兵研發</button>
+                    <button id="woodSpearStudy" data-wood="25000" data-food="50000">木槍騎兵研發</button>
                 </div>
                 <div class="ui-block-c centerDIV" style="height:100%">
-                    <button id="woodBowStudy">木箭矢弓兵研發</button>                     
+                    <button id="woodBowStudy" data-wood="50000" data-food="25000">木箭矢弓兵研發</button>                     
                 </div>
             </div>
             <div class="ui-grid-b" style="height:95px">
@@ -176,6 +180,9 @@
                     <button id="crossbowStudy">弩弓兵研發</button>
                 </div>
             </div>
+        </div>
+        <div id="barracksBuildPage">
+            
         </div>
         <!-- <div class="maskPopUpWinContent">这里是正文内容</div> -->
         <script type="text/javascript" src="cordova.js"></script>
