@@ -37,6 +37,39 @@ $(document).ready(function() {
     var arsenalStudyLevel = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0, 0, 0];
 
+    //兵營等級
+    var barracksLevel = 0;
+
+    //木步兵
+    var woodSword = {
+        hp: 100,
+        attack: 2,
+        defense: 2,
+        wood: 25,
+        food: 30,
+        total: 0
+    };
+    //木槍騎
+    var woodSpear = {
+        hp: 100,
+        attack: 3,
+        defense: 2,
+        wood: 50,
+        food: 80,
+        total: 0
+    };
+    //木弓兵
+    var woodBow = {
+        hp: 75,
+        attack: 3,
+        defense: 1,
+        wood: 60,
+        food: 30,
+        total: 0
+    }
+
+
+
     // 讀取資料; 
     readData();
 
@@ -44,6 +77,8 @@ $(document).ready(function() {
     $('#buildPage').hide();
     //兵工廠頁面初始化
     $('#arsenalBuildPage').hide();
+    //兵營頁面初始化
+    $('#barracksBuildPage').hide();
 
     //切換建築頁面
     $('#buildBtn').click(function() {
@@ -349,13 +384,101 @@ $(document).ready(function() {
         var wood = $('#woodValue').html();
         var rock = $('#rockValue').html();
 
-        if(parseInt(wood) >= 150000 && parseInt(rock) >= 2500 && arsenalStudyLevel[0]) {
+        if(parseInt(wood) >= 15000 && parseInt(rock) >= 2500 && arsenalStudyLevel[0]) {
+            barracksLevel = 1;
             $(this).text('已擁有');
             $('#barracksText').remove();
             $(this).attr('disabled', 'disabled');
             $('#barracksBuildBtn').removeAttr("disabled");
         }
     });
+
+    //訓練士兵按鍵ID列表
+    var soldierJQ = [$('#woodSwordTrainBtn'), $('#woodSpearTrainBtn'), $('#woodBowTrainBtn')];
+    //訓練士兵按鍵對應名稱列表
+    var soldierName = ['woodSword', 'woodSpear', 'woodBow'];
+    //訓練士兵種子
+    var trainingTime;
+    //訓練士兵倒數種子
+    var countTime;
+    //訓練士兵訓練按鈕副程式鑰匙
+    var soldierTrainKey = 0;
+    //士兵數顯示副程式
+    function soldierTraining() {
+        $('#woodSwordNum').html('目前擁有：' + woodSword.total);
+        $('#woodSpearNum').html('目前擁有：' + woodSpear.total);
+        $('#woodBowNum').html('目前擁有：' + woodBow.total);
+    }
+    //訓練士兵時間顯示副程式
+    function soldierTrainingSecond(sec, str) {
+        var JQ_id = '#' + str;
+        var Tsecond = Math.floor(sec/1000) % 60;
+        var Tminute = Math.floor((sec/1000)/60);
+        var Thour = Math.floor(Tminute/60);
+        var Tday = Math.floor(Thour/24);
+        var Tmonth = Math.floor(Tday/30);
+
+        if(Tmonth!=0) {
+            $(JQ_id).text(Tmonth + ':' + Tday + ':' + Thour
+             + ':' + Tminute + ':' + Tsecond);
+        }else if(Tday != 0) {
+            $().text(Tday + ':' + Thour
+             + ':' + Tminute + ':' + Tsecond);
+        }else if(Thour != 0) {
+            $(JQ_id).text(Thour + ':' + Tminute + ':' + Tsecond);
+        }else if(Tminute != 0) {
+            $(JQ_id).text(Tminute + ':' + Tsecond);
+        }else if(Tsecond != 0) {
+            $(JQ_id).text(Tsecond);
+        }
+        countTime = setInterval(function() {
+            Tsecond = Math.floor(sec/1000) % 60;
+            Tminute = Math.floor((sec/1000)/60);
+            Thour = Math.floor(Tminute/60);
+            Tday = Math.floor(Thour/24);
+            Tmonth = Math.floor(Tday/30);
+            if(Tmonth!=0) {
+                $(JQ_id).text(Tmonth + ':' + Tday + ':' + Thour
+                 + ':' + Tminute + ':' + Tsecond);
+            }
+            else if(Tday != 0) {
+                $(JQ_id).text(Tday + ':' + Thour
+                 + ':' + Tminute + ':' + Tsecond);
+            }else if(Thour != 0) {
+                $(JQ_id).text(Thour + ':' + Tminute + ':' + Tsecond);
+            }else if(Tminute != 0) {
+                $(JQ_id).text(Tminute + ':' + Tsecond);
+            }else {
+                $(JQ_id).text(Tsecond);
+            }
+            sec-=1000;
+            if(sec <= 0){
+                clearInterval(countTime);
+                $(JQ_id).text('訓練');
+            }
+        }, 1000);
+        return ( sec / 1000 ) * 45;
+    }
+    //訓練士兵按鈕宣告
+    for(var i = 0 ; i < soldierJQ.length ; i++) {
+        soldierJQ[i].click(function(dom) {
+            if(soldierTrainKey){
+                return;
+            }
+            soldierTrainKey = 1;
+            var JQ_id = dom.currentTarget.id;
+            var JQ_name = JQ_id.substring(0, JQ_id.length - 8);
+            var JQ_input = '#' + JQ_name + 'Input';
+            var temp = parseInt($(JQ_input).val());
+            var second = soldierTrainingSecond(temp, JQ_id);
+            $(JQ_input).val(0);
+            $(JQ_input).slider('refresh');
+            trainingTime = setTimeout(function() {
+                eval(JQ_name + '.total += temp;');
+                soldierTrainKey = 0;
+            }, second);
+        });
+    }
 
 
     //生產 副程式
@@ -466,6 +589,7 @@ $(document).ready(function() {
         saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, 
             rice, food, wood, rock, iron, house);
         checkBuildUsed();
+        soldierTraining();
         var a = setTimeout(counting, 200);
     } counting();
 
@@ -490,13 +614,29 @@ $(document).ready(function() {
 
     //確認建築物是否能使用 副程式
     function checkBuildUsed() {
-        if(arsenalLevel > 0){
+        //兵工廠等級大於0時
+        if(arsenalLevel > 0)
             $('#arsenalBuildBtn').removeAttr("disabled");
-        }
-        if(arsenalLevel >= 10)
+
+        //兵工廠等級達到8時
+        if(arsenalLevel >= 8) {
             $('#arsenalText').remove();
+            $('#arsenal').attr('disabled', 'disabled');
+            $('#arsenal').text('最大等級');
+        }
+
+        //兵營等級大於0時
+        if(barracksLevel > 0) {
+            $('#barracks').text('已擁有');
+            $('#barracksText').remove();
+            $('#barracks').attr('disabled', 'disabled');
+            $('#barracksBuildBtn').removeAttr("disabled");
+        }
+
+        //兵工廠研發科技按鈕 解除隱藏
         for(var i = 0 ; i < arsenalLevel * 3 + 1 ; i++)
             arsenalStudyArray[i].removeAttr("disabled");
+
         //兵工廠研發科技按鈕 確認
         for(var i = 0 ; i < arsenalNameArray.length ; i++) {
             if(arsenalStudyLevel[i] > 0)
@@ -506,7 +646,7 @@ $(document).ready(function() {
 
     // 資料儲存
     function saveData(farmers, cooks, lumberjack, rockWorkers, ironWorkers, rice, food, wood, rock, iron, house) {
-        localStorage.init = 0;
+        localStorage.init = 1;
         localStorage.villagers = villagers;
         localStorage.farmers = farmers;
         localStorage.cooks = cooks;
@@ -521,11 +661,12 @@ $(document).ready(function() {
         localStorage.house = house;
         localStorage.arsenalLevel = arsenalLevel;
         localStorage.arsenalStudyLevel = arsenalStudyLevel;
+        localStorage.barracksLevel = barracksLevel;
     }
 
     //資料讀取
     function readData() {  
-        if(localStorage.init == 0){
+        if(localStorage.init == 1){
             $('#farmers').html(localStorage.farmers);
             $('#cooks').html(localStorage.cooks);
             $('#lumberjack').html(localStorage.lumberjack);
@@ -539,6 +680,7 @@ $(document).ready(function() {
             $('#house').html(localStorage.house);
             arsenalLevel = parseInt(localStorage.arsenalLevel);
             villagers = parseInt(localStorage.villagers);
+            barracksLevel = parseInt(localStorage.barracksLevel);
             $('#arsenal').text(buildingLevelChinese[parseInt(arsenalLevel)]);
             $('#villagers').html(villagers +  '/' + ( 5 + ( parseInt(localStorage.house) * 5 ) ) );
             if(arsenalLevel < 10)

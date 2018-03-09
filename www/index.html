@@ -13,76 +13,64 @@
         <title>app</title>
     </head>
     <body>
-        <div data-role="page">
-            <div id="personPage" role="main" class="ui-content">
-                <div class="ui-grid-a">
-                    <div id="people" class="ui-block-a" style="height: 100%;">
-                        <!-- 村民 -->
-                        <span>村民:<span id="villagers"></span></span><br />
-                        <!-- 農夫 -->
-                        <span>農夫:</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="farmersLower">-</button>
-                        <span id="farmers">0</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="farmersUpper">+</button><br />
-                        <!-- 廚夫 -->
-                        <span>廚夫:</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="cooksLower">-</button>
-                        <span id="cooks">0</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="cooksUpper">+</button><br />
-                        <!-- 伐木工 -->
-                        <span>伐木工:</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="lumberjackLower">-</button>
-                        <span id="lumberjack">0</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="lumberjackUpper">+</button><br />
-                        <!-- 石礦工 -->
-                        <span>石礦工:</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="rockWorkersLower">-</button>
-                        <span id="rockWorkers">0</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="rockWorkersUpper">+</button><br />
-                        <!-- 鐵礦工 -->
-                        <span>鐵礦工:</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="ironWorkersLower">-</button>
-                        <span id="ironWorkers">0</span>
-                        <button class="ui-btn ui-btn-inline ui-mini" id="ironWorkersUpper">+</button><br />
-                    </div>
-                    <div class="ui-block-b" style="height: 100%;">
-                        <span>倉庫:</span><br />
-                        &emsp;<span id="rice">稻米:<span id="riceValue">0</span></span><br />
-                        &emsp;<span id="food">糧食:<span id="foodValue">0</span></span><br />
-                        &emsp;<span id="wood">木頭:<span id="woodValue">0</span></span><br />
-                        &emsp;<span id="rock">石頭:<span id="rockValue">0</span></span><br />
-                        &emsp;<span id="iron">鐵:<span id="ironValue">0</span></span><br />
-                    </div>
-                </div><br />
-                <div class="ui-grid-a" style="height:95px">
-                    <a class="ui-btn" id="buildBtn">建築</a>
+        <div id="personPage" role="main" class="ui-content">
+            <div class="ui-grid-a">
+                <div id="people" class="ui-block-a" style="height: 100%;">
+                    <!-- 村民 -->
+                    <span>村民:<span id="villagers"></span></span><br />
+                    <!-- 農夫 -->
+                    <span>農夫:</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="farmersLower">-</button>
+                    <span id="farmers">0</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="farmersUpper">+</button><br />
+                    <!-- 廚夫 -->
+                    <span>廚夫:</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="cooksLower">-</button>
+                    <span id="cooks">0</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="cooksUpper">+</button><br />
+                    <!-- 伐木工 -->
+                    <span>伐木工:</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="lumberjackLower">-</button>
+                    <span id="lumberjack">0</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="lumberjackUpper">+</button><br />
+                    <!-- 石礦工 -->
+                    <span>石礦工:</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="rockWorkersLower">-</button>
+                    <span id="rockWorkers">0</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="rockWorkersUpper">+</button><br />
+                    <!-- 鐵礦工 -->
+                    <span>鐵礦工:</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="ironWorkersLower">-</button>
+                    <span id="ironWorkers">0</span>
+                    <button class="ui-btn ui-btn-inline ui-mini" id="ironWorkersUpper">+</button><br />
                 </div>
-        </div>
-        <div class="bg"></div>
-        <div class="content">
-            <span style="size: 20px;color: white;"><span id="thisNum"></span></span>
-            <button id="plusTen" class="ui-btn">10</button>
-            <button id="plusFifty" class="ui-btn">50</button>
-            <button id="plusHundred" class="ui-btn">100</button>
-            <button id="plusThousand" class="ui-btn">1000</button>
-            <button id="plusTenThousand" class="ui-btn">10000</button>
+                <div class="ui-block-b" style="height: 100%;">
+                    <span>倉庫:</span><br />
+                    &emsp;<span id="rice">稻米:<span id="riceValue">0</span></span><br />
+                    &emsp;<span id="food">糧食:<span id="foodValue">0</span></span><br />
+                    &emsp;<span id="wood">木頭:<span id="woodValue">0</span></span><br />
+                    &emsp;<span id="rock">石頭:<span id="rockValue">0</span></span><br />
+                    &emsp;<span id="iron">鐵:<span id="ironValue">0</span></span><br />
+                </div>
+            </div><br />
+            <div class="ui-grid-a" style="height:95px">
+                <a class="ui-btn" id="buildBtn">建築</a>
+            </div>
         </div>
         <div id="buildPage">
-            <div role="main" class="ui-content">
-                <span>房舍:
-                    <span id="house">0</span>
-                </span>
-                <button class="ui-btn ui-btn-inline ui-mini" id="houseMake">製作</button><br />
-                <span>材料:木頭x20</span><br />
-                <span>兵工廠:
-                    <button class="ui-btn ui-btn-inline ui-mini" id="arsenal">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="arsenalBuildBtn">進去</button><br />
-                    <span id="arsenalText">材料:木頭x150</span>
-                </span><br />
-                <span>兵營:
-                    <button class="ui-btn ui-btn-inline ui-mini" id="barracks">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="barracksBuildBtn">進去</button><br />
-                    <span id="barracksText">材料:木頭x15000 石頭x2500</span>
-                </span>
-            </div>
+            <span>房舍:
+                <span id="house">0</span>
+            </span>
+            <button class="ui-btn ui-btn-inline ui-mini" id="houseMake">製作</button><br />
+            <span>材料:木頭x20</span><br />
+            <span>兵工廠:
+                <button class="ui-btn ui-btn-inline ui-mini" id="arsenal">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="arsenalBuildBtn">進去</button><br />
+                <span id="arsenalText">材料:木頭x150</span>
+            </span><br />
+            <span>兵營:
+                <button class="ui-btn ui-btn-inline ui-mini" id="barracks">尚未擁有</button><button class="ui-btn ui-btn-inline ui-mini" disabled="false"  id="barracksBuildBtn">進去</button><br />
+                <span id="barracksText">材料:木頭x15000 石頭x2500</span>
+            </span>
         </div>
         <div id="arsenalBuildPage">
             <div class="ui-grid-b" style="height:95px">
@@ -182,8 +170,35 @@
             </div>
         </div>
         <div id="barracksBuildPage">
-            
+            <div class="ui-grid-b" style="height:130px">
+                <div class="ui-block-a centerDIV" style="height:100%">
+                    <span style="float: left;">木劍兵：</span><br />
+                    <span id="woodSwordNum"></span>
+                    <input id="woodSwordInput" value="0" min="0" max="400000" type="range">
+                    <button id="woodSwordTrainBtn" class="ui-btn ui-mini">訓練</button>
+                </div>
+                <div class="ui-block-b centerDIV" style="height:100%">
+                    <span style="float: left;">木槍騎兵：</span><br />
+                    <span id="woodSpearNum"></span>
+                    <input id="woodSpearInput" value="0" min="0" max="400000" type="range">
+                    <button id="woodSpearTrainBtn" class="ui-btn ui-mini">訓練</button>
+                </div>
+                <div class="ui-block-c centerDIV" style="height:100%">  
+                    <span style="float: left;">木箭矢兵：</span><br />
+                    <span id="woodBowNum"></span>
+                    <input id="woodBowInput" value="0" min="0" max="400000" type="range">
+                    <button id="woodBowTrainBtn" class="ui-btn ui-mini">訓練</button>     
+                </div>
+            </div>
         </div>
+        <div class="bg"></div>
+        <div class="content">
+            <span style="size: 20px;color: white;"><span id="thisNum"></span></span>
+            <button id="plusTen" class="ui-btn">10</button>
+            <button id="plusFifty" class="ui-btn">50</button>
+            <button id="plusHundred" class="ui-btn">100</button>
+            <button id="plusThousand" class="ui-btn">1000</button>
+            <button id="plusTenThousand" class="ui-btn">10000</button>
         <!-- <div class="maskPopUpWinContent">这里是正文内容</div> -->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
